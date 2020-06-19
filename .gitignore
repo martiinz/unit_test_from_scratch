@@ -1,0 +1,5 @@
+*.o
+*.d
+.cproject
+.settings/
+Debug/unit_test_from_scratch
