@@ -6,12 +6,12 @@
 
 namespace MyTestFramework
 {
-	void assert_that(bool statement, const char* message) {
+	void mytest_assert_that(bool statement, const char* message) {
 	  if(!statement)
 		throw runtime_error(message);
 	}
 
-	int run_test(void (*unit_test)(), const char* name) {
+	int mytest_run_test(void (*unit_test)(), const char* name) {
 	  try {
 		unit_test();
 		printf("[+] Test %s successful.\n", name);
