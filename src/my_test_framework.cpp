@@ -14,10 +14,10 @@ namespace MyTestFramework
 	int mytest_run_test(void (*unit_test)(), const char* name) {
 	  try {
 		unit_test();
-		printf("[+] Test %s successful.\n", name);
+		std::cout << "[+] Test " << name << " successful." << std::endl;
 		return 0;
 	  } catch(const exception& e) {
-		printf("[-] Test failure in %s. %s.\n", name, e.what());
+		std::cout << "[-] Test failure in " << name << ", " << e.what() << std::endl;
 	  }
 	  return -1;
 	}

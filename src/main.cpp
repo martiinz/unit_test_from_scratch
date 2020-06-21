@@ -43,8 +43,12 @@ void speed_stored_persistent() {
 	mytest_assert_that(auto_brake.get_speed_mps() == 0, "speed not stored persistent 0");
 }
 
+// FIXME declaring "no_of_brake_command" locally leads in program termination
+// life cycle/ storage duration issue? compiler optimization on anonymous function?
+int no_of_brake_command{0};
+
 void publish_collision_within_threshold() {
-	int no_of_brake_command{0};
+	no_of_brake_command = 0;
 	AutoBrake auto_brake{
 		[&no_of_brake_command](const BrakeCommand&) {
 			no_of_brake_command++;
@@ -53,11 +57,11 @@ void publish_collision_within_threshold() {
 	auto_brake.set_collision_threshold_s(10);
 	auto_brake.observe(SpeedUpdate{100});
 	auto_brake.observe(CarDetected{100, 0});
-	mytest_assert_that(no_of_brake_command == 1, "brake command not published");
+	mytest_assert_that(no_of_brake_command == 1, "alert brake command");
 }
 
 void not_publish_collision_outside_threshold() {
-	int no_of_brake_command{0};
+	no_of_brake_command = 0;
 	AutoBrake auto_brake{
 		[&no_of_brake_command](const BrakeCommand&) {
 			no_of_brake_command++;
@@ -66,7 +70,7 @@ void not_publish_collision_outside_threshold() {
 	auto_brake.set_collision_threshold_s(2);
 	auto_brake.observe(SpeedUpdate{100});
 	auto_brake.observe(CarDetected{1000, 50});
-	mytest_assert_that(no_of_brake_command == 1, "brake command not published");
+	mytest_assert_that(no_of_brake_command == 0, "dont alert brake command");
 }
 
 int main() {
@@ -78,4 +82,5 @@ int main() {
 	mytest_run_test(speed_stored_persistent, "store speed persistent");
 	mytest_run_test(publish_collision_within_threshold, "publish brake command");
 	mytest_run_test(not_publish_collision_outside_threshold, "not publish brake command");
+	std::cout << "=== END OF TEST ===" << std::endl;
 }

@@ -10,6 +10,7 @@
 #define MY_TEST_FRAMEWORK_H
 
 #include <cstdio>
+#include <iostream>
 #include <functional>
 #include <stdexcept>
 
